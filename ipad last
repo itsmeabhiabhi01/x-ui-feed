@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HAPPY TALK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Orbitron:wght@400;700&family=Work+Sans:wght@200;400&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+            background: linear-gradient(to right, #004d4d, #004d4d);
+        }
+        .ipad-wrap {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1003;
+            justify-content: center;
+            align-items: center;
+        }
+        :root {
+            --sizeVar: 95vmin;
+        }
+        .ipadBox {
+            position: relative;
+            width: var(--sizeVar);
+            height: calc(var(--sizeVar) * 0.77);
+            background-color: #121212;
+            border-radius: calc(var(--sizeVar) / 24);
+            box-shadow: 0 0 0 calc(var(--sizeVar) / 200) #9d9ea0;
+        }
+        .ipadBox::before,
+        .ipadBox::after {
+            content: "";
+            position: absolute;
+            width: 4%;
+            height: 1%;
+            left: 6%;
+            top: -1.2%;
+            border-radius: calc(var(--sizeVar) / 24) calc(var(--sizeVar) / 24) 0 0;
+            background-color: #8a8a8a;
+            z-index: -1;
+        }
+        .ipadBox::after {
+            left: 11%;
+        }
+        .powerButton {
+            position: absolute;
+            width: fit-content;
+            height: 7%;
+            left: -1.5vmin;
+            top: 5%;
+            padding: 0;
+            padding-right: 0.5vmin;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            color: transparent;
+            border-radius: calc(var(--sizeVar) / 24) 0 0 calc(var(--sizeVar) / 24);
+            background-color: #8a8a8a;
+            z-index: -1;
+        }
+        .powerButton::after {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 150%;
+            top: -25%;
+            left: -100%;
+        }
+        .ipadScreen {
+            position: absolute;
+            width: 95%;
+            height: 93.6%;
+            top: 3.2%;
+            left: 2.5%;
+            border-radius: calc(var(--sizeVar) / 40);
+            background-color: #aaaaaa;
+            opacity: 0;
+            overflow: hidden;
+            transition: opacity 300ms linear;
+        }
+        .wallpaper,
+        .lockContent {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            background-image: url("https://assets.codepen.io/2722301/bg.jpg");
+            background-size: cover;
+            background-position: center;
+            background-color: black;
+        }
+        .lockScreen {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            cursor: pointer;
+            overflow: hidden;
+            backdrop-filter: blur(0);
+            transition: top 800ms ease-in 0s, backdrop-filter 200ms ease-in 0s;
+        }
+        .lockContent {
+            background: none;
+        }
+        .statusBar {
+            width: 100%;
+            height: 3%;
+            background-image: url("https://assets.codepen.io/2722301/status.png");
+            background-position: right;
+            background-size: 11.6%;
+            background-repeat: no-repeat;
+        }
+        .lockIcon {
+            width: 100%;
+            height: 5%;
+            background-image: url("https://assets.codepen.io/2722301/lock.png");
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        .lockTime {
+            width: 100%;
+            font-family: "Work Sans", sans-serif;
+            font-weight: 200;
+            font-size: calc(var(--sizeVar) / 46);
+            color: white;
+            text-align: center;
+            line-height: 250%;
+            margin-top: 3%;
+        }
+        .lockTime::first-line {
+            font-size: calc(var(--sizeVar) / 10.5);
+        }
+        .interactionBar {
+            --colorMe: white;
+            position: absolute;
+            bottom: -8%;
+            height: 3%;
+            width: 100%;
+            transition: bottom 800ms ease-in 0s;
+        }
+        .lockScreen .interactionBar {
+            bottom: 0;
+        }
+        #inAppBar {
+            cursor: pointer;
+        }
+        .interactionBar::after {
+            content: "";
+            position: absolute;
+            width: 28%;
+            height: 30%;
+            top: 0;
+            margin-left: 36%;
+            border-radius: 100px;
+            background-color: var(--colorMe);
+        }
+        .lockScreen .interactionBar::after {
+            animation: interactionAnim 8000ms ease-in infinite;
+        }
+        .lockScreen .interactionBar::before {
+            position: absolute;
+            width: 100%;
+            top: -140%;
+            text-align: center;
+            color: white;
+            content: "swipe up to open";
+            font-size: calc(var(--sizeVar) / 46);
+            font-family: "Work Sans", sans-serif;
+            font-weight: 200;
+            animation: interTextAnim 8000ms ease-in infinite;
+        }
+        .appGrid {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 80%;
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: calc(var(--sizeVar) / 30);
+            opacity: 0;
+            transition: opacity 400ms ease-in-out;
+            overflow-y: auto;
+            padding-bottom: 20px;
+        }
+        .appGrid.show {
+            opacity: 1;
+        }
+        .logo {
+            text-align: center;
+            width: calc(var(--sizeVar) / 10);
+            cursor: pointer;
+        }
+        .logo img {
+            width: 100%;
+            height: auto;
+            border-radius: calc(var(--sizeVar) / 80);
+            transition: transform 0.2s;
+        }
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+        .logo p {
+            margin: 5px 0 0;
+            font-family: "Work Sans", sans-serif;
+            font-size: calc(var(--sizeVar) / 60);
+            color: white;
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+        @keyframes interactionAnim {
+            0% { top: 0; }
+            70% { top: 0; }
+            80% { top: -50%; }
+            92% { top: 0; }
+            100% { top: 0; }
+        }
+        @keyframes interTextAnim {
+            0% { top: -100%; opacity: 0; }
+            70% { top: -100%; opacity: 0; }
+            80% { top: -200%; opacity: 1; }
+            90% { top: -200%; opacity: 1; }
+            100% { top: -200%; opacity: 0; }
+        }
+        .youtube-container {
+            background: #181818;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        .youtube-container.active {
+            display: block;
+        }
+        .youtube-header {
+            padding: 10px;
+            background: #282828;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .youtube-search {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+        .youtube-search input {
+            width: 100%;
+            padding: 5px;
+            border-radius: 5px;
+            background: #121212;
+            color: #fff;
+            border: none;
+        }
+        .youtube-content {
+            padding: 10px;
+            overflow-y: auto;
+            height: calc(100% - 60px);
+        }
+        .video-item {
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .video-item:hover {
+            transform: scale(1.05);
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: all 0.3s;
+        }
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body onload="checkTime();">
+    <!-- iPad Interface -->
+    <div class="ipad-wrap" id="ipad-wrap">
+        <div class="ipadBox">
+            <button class="powerButton" onclick="powerMe();">I</button>
+            <div class="ipadScreen">
+                <div class="wallpaper">
+                    <div class="statusBar"></div>
+                    <div class="appGrid" id="appGrid">
+                        <div class="logo" id="ipad-youtube-app">
+                            <img src="https://img.icons8.com/?size=100&id=Fzmez16u38Xl&format=png&color=000000" alt="YouTube">
+                            <p>YouTube</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.instagram.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=BrU2BBoRXiWq&format=png&color=000000" alt="Instagram">
+                            <p>Instagram</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://x.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000" alt="X">
+                            <p>X</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.facebook.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=118497&format=png&color=000000" alt="Facebook">
+                            <p>Facebook</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.tiktok.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=118638&format=png&color=000000" alt="TikTok">
+                            <p>TikTok</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.pinterest.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=63676&format=png&color=000000" alt="Pinterest">
+                            <p>Pinterest</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.linkedin.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=xuvGCOXi8Wyg&format=png&color=000000" alt="LinkedIn">
+                            <p>LinkedIn</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.quora.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=wPcChHypTdti&format=png&color=000000" alt="Quora">
+                            <p>Quora</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.reddit.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=FLisMqR76b1i&format=png&color=000000" alt="Reddit">
+                            <p>Reddit</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" alt="Google">
+                            <p>Google</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.google.com/chrome', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=63785&format=png&color=000000" alt="Chrome">
+                            <p>Chrome</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://maps.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=DcygmpZqBEd9&format=png&color=000000" alt="Google Maps">
+                            <p>Google Maps</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://docs.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=30464&format=png&color=000000" alt="Google Docs">
+                            <p>Google Docs</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://mail.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=qyRpAggnV0zH&format=png&color=000000" alt="Gmail">
+                            <p>Gmail</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://pay.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=d3FdjviJ7gNe&format=png&color=000000" alt="Google Pay">
+                            <p>Google Pay</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.amazon.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=21295&format=png&color=000000" alt="Amazon">
+                            <p>Amazon</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.amazon.com/amazonprime', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=TUt56jArwSOO&format=png&color=000000" alt="Amazon Prime">
+                            <p>Amazon Prime</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://music.amazon.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=3TE5FcLikFfj&format=png&color=000000" alt="Amazon Music">
+                            <p>Amazon Music</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.openai.com/chatgpt', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=FBO05Dys9QCg&format=png&color=000000" alt="ChatGPT">
+                            <p>ChatGPT</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://x.ai', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=eoxMN35Z6JKg&format=png&color=000000" alt="AI">
+                            <p>AI</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.miniclip.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=GdTfmvoroqDq&format=png&color=000000" alt="Games">
+                            <p>Games</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.spotify.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=G9XXzb9XaEKX&format=png&color=000000" alt="Spotify">
+                            <p>Spotify</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.netflix.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=ortlsYTZxMvT&format=png&color=000000" alt="Netflix">
+                            <p>Netflix</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.flipkart.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=UU2im0hihoyi&format=png&color=000000" alt="Flipkart">
+                            <p>Flipkart</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.swiggy.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=M8M9YjBrtUkd&format=png&color=000000" alt="Swiggy">
+                            <p>Swiggy</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.zomato.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=8VXmexoroqDq&format=png&color=000000" alt="Zomato">
+                            <p>Zomato</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.paytm.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=Aub11Fs5DJVg&format=png&color=000000" alt="Paytm">
+                            <p>Paytm</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.phonepe.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=OYtBxIlJwMGA&format=png&color=000000" alt="PhonePe">
+                            <p>PhonePe</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.notion.so', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=uVERmCBZZACL&format=png&color=000000" alt="Notion">
+                            <p>Notion</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.canva.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=iWw83PVcBpLw&format=png&color=000000" alt="Canva">
+                            <p>Canva</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.wikipedia.org', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=12470&format=png&color=000000" alt="Wikipedia">
+                            <p>Wikipedia</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.whatsapp.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000" alt="WhatsApp">
+                            <p>WhatsApp</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.apple.com/mail', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=cHNRcWMI2bLJ&format=png&color=000000" alt="Mail">
+                            <p>Mail</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://snapchat.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=67599&format=png&color=000000" alt="Snapchat">
+                            <p>Snapchat</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://telegram.org', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=oWiuH0jFiU0R&format=png&color=000000" alt="Telegram">
+                            <p>Telegram</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://zoom.us', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=82ewLsKHYlLc&format=png&color=000000" alt="Zoom">
+                            <p>Zoom</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://meet.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=pE97I4t7Il9M&format=png&color=000000" alt="Google Meet">
+                            <p>Google Meet</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://music.youtube.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=V1cbDThDpbRc&format=png&color=000000" alt="YouTube Music">
+                            <p>YouTube Music</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://translate.google.com', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=13647&format=png&color=000000" alt="Google Translate">
+                            <p>Google Translate</p>
+                        </div>
+                        <div class="logo" onclick="window.open('https://www.perplexity.ai', '_blank')">
+                            <img src="https://img.icons8.com/?size=100&id=kzJWN5jCDzpq&format=png&color=000000" alt="Perplexity AI">
+                            <p>Perplexity AI</p>
+                        </div>
+                    </div>
+                    <div class="youtube-container" id="ipad-youtube-container">
+                        <div class="youtube-header">
+                            <i class="fab fa-youtube text-red-600 text-2xl"></i>
+                            <div class="youtube-search">
+                                <input id="ipad-youtube-search-input" placeholder="Search YouTube" type="text"/>
+                            </div>
+                            <button id="ipad-youtube-search-button" class="text-white"><i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="youtube-content">
+                            <div id="ipad-youtube-video-player" class="mb-4">
+                                <iframe id="ipad-youtube-iframe" src="" allowfullscreen class="hidden w-full h-96"></iframe>
+                            </div>
+                            <div id="ipad-youtube-video-list" class="grid grid-cols-2 gap-4"></div>
+                        </div>
+                        <button class="back-button" id="ipad-youtube-back-button"><i class="fas fa-arrow-left"></i></button>
+                    </div>
+                </div>
+                <div class="lockScreen" onclick="lockClick();">
+                    <div class="lockContent">
+                        <div class="statusBar"></div>
+                        <div class="lockIcon"></div>
+                        <div class="lockTime" id="ipad-lock-time">9:41<br />Saturday, August 17</div>
+                    </div>
+                    <div class="interactionBar"></div>
+                </div>
+                <div class="interactionBar" id="inAppBar" onclick="goHome();"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = 'AIzaSyAsQ7E02xCW3qAdxwHK2PLj-pppMfm9fBw';
+        const ipadWrap = document.getElementById('ipad-wrap');
+        const ipadYoutubeApp = document.getElementById('ipad-youtube-app');
+        const ipadYoutubeContainer = document.getElementById('ipad-youtube-container');
+        const ipadYoutubeSearchButton = document.getElementById('ipad-youtube-search-button');
+        const ipadYoutubeSearchInput = document.getElementById('ipad-youtube-search-input');
+        const ipadYoutubeBackButton = document.getElementById('ipad-youtube-back-button');
+
+        // iPad Interactions
+        ipadYoutubeApp.addEventListener('click', () => {
+            document.getElementById('appGrid').classList.remove('show');
+            ipadYoutubeContainer.classList.add('active');
+            document.getElementById('inAppBar').style.bottom = '0';
+            document.getElementById('inAppBar').style.pointerEvents = 'all';
+        });
+
+        ipadYoutubeBackButton.addEventListener('click', () => {
+            ipadYoutubeContainer.classList.remove('active');
+            document.getElementById('appGrid').classList.add('show');
+            document.getElementById('inAppBar').style.bottom = '-8%';
+            document.getElementById('inAppBar').style.pointerEvents = 'none';
+        });
+
+        // YouTube Functionality for iPad
+        ipadYoutubeSearchButton.addEventListener('click', () => {
+            const query = ipadYoutubeSearchInput.value;
+            searchYouTube(query, 'ipad-youtube-video-list', 'ipad-youtube-iframe');
+        });
+
+        ipadYoutubeSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchYouTube(ipadYoutubeSearchInput.value, 'ipad-youtube-video-list', 'ipad-youtube-iframe');
+            }
+        });
+
+        function searchYouTube(query, listId, iframeId) {
+            const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${encodeURIComponent(query)}&key=${API_KEY}`;
+            const videoList = document.getElementById(listId);
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(data => {
+                    videoList.innerHTML = '';
+                    data.items.forEach(item => {
+                        const videoItem = document.createElement('div');
+                        videoItem.className = 'video-item bg-gray-700 rounded-lg overflow-hidden';
+                        videoItem.innerHTML = `
+                            <img alt="${item.snippet.title}" src="${item.snippet.thumbnails.medium.url}" class="w-full"/>
+                            <div class="p-2">
+                                <h3 class="font-bold text-sm">${item.snippet.title}</h3>
+                                <p class="text-gray-400 text-xs">${item.snippet.channelTitle}</p>
+                            </div>
+                        `;
+                        videoItem.addEventListener('click', () => playYouTubeVideo(item.id.videoId, iframeId));
+                        videoList.appendChild(videoItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching YouTube videos:', error));
+        }
+
+        function playYouTubeVideo(videoId, iframeId) {
+            const iframe = document.getElementById(iframeId);
+            iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            iframe.classList.remove('hidden');
+        }
+
+        // iPad Functionality
+        let powerVar = 0;
+
+        function powerMe() {
+            document.getElementById("inAppBar").style.bottom = "-8%";
+            document.getElementById("inAppBar").style.pointerEvents = "none";
+            document.getElementsByClassName("wallpaper")[0].style.backgroundImage =
+                "url('https://assets.codepen.io/2722301/bg.jpg')";
+            if (powerVar == 1) {
+                document.getElementsByClassName("ipadScreen")[0].style.opacity = 1;
+                document.getElementsByClassName("ipadScreen")[0].style.pointerEvents = "all";
+                powerVar = 0;
+                document.getElementsByClassName("lockScreen")[0].style.transition =
+                    "top 800ms ease-in 0s, backdrop-filter 200ms ease-in 0s";
+                document.getElementById("appGrid").style.transition = "opacity 400ms ease-in-out";
+            } else {
+                document.getElementsByClassName("ipadScreen")[0].style.opacity = 0;
+                document.getElementsByClassName("ipadScreen")[0].style.pointerEvents = "none";
+                powerVar = 1;
+                setTimeout(function () {
+                    document.getElementsByClassName("lockScreen")[0].style.transition = "none";
+                    document.getElementById("appGrid").style.transition = "none";
+                    document.getElementsByClassName("lockScreen")[0].style.backdropFilter = "blur(0)";
+                    document.getElementsByClassName("lockScreen")[0].style.top = "0";
+                    document.getElementById("appGrid").classList.remove("show");
+                    ipadYoutubeContainer.classList.remove('active');
+                }, 300);
+            }
+        }
+
+        function lockClick() {
+            document.getElementsByClassName("lockScreen")[0].style.backdropFilter = "blur(2vh) brightness(1.2)";
+            document.getElementsByClassName("lockScreen")[0].style.top = "-110%";
+            document.getElementById("appGrid").classList.add("show");
+        }
+
+        function checkTime() {
+            var day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            d = new Date();
+            if (d.getMinutes() < 10) {
+                minTime = "0" + d.getMinutes();
+            } else {
+                minTime = d.getMinutes();
+            }
+            document.getElementsByClassName("lockTime")[0].innerHTML =
+                d.getHours() + ":" + minTime + "<br/>" + day[d.getDay()] + ", " + month[d.getMonth()] + " " + d.getDate();
+            setTimeout(function () {
+                checkTime();
+            }, 500);
+        }
+
+        function goHome() {
+            document.getElementById("inAppBar").style.bottom = "-8%";
+            document.getElementById("inAppBar").style.pointerEvents = "none";
+            document.getElementsByClassName("wallpaper")[0].style.backgroundImage =
+                "url('https://assets.codepen.io/2722301/bg.jpg')";
+            document.getElementById("appGrid").classList.add("show");
+            ipadYoutubeContainer.classList.remove('active');
+        }
+
+        // Initialize iPad screen
+        setTimeout(() => {
+            document.getElementsByClassName('ipadScreen')[0].style.opacity = 1;
+        }, 1000);
+    </script>
+</body>
+</html>
