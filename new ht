@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAPPY TALK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #1e90ff;
+            --secondary: #60a5fa;
+            --background: #000;
+            --card-background: rgba(31, 40, 46, 0.7);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b3b8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --hover-color: rgba(30, 144, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: var(--background) url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxmaWx0ZXIgaWQ9Im5vaXNlIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjA1IiBudW1PY3RhdmVzPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+CiAgICA8ZmVDb2xvck1hdHJpeCB0eXBlPSJzYXR1cmF0ZSIgdmFsdWVzPSIwIi8+CiAgPC9maWx0ZXI+CiAgPHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsdGVyPSJ1cmwoI25vaXNlKSIgb3BhY2l0eT0iMC4yIi8+Cjwvc3ZnPg==') repeat;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background 0.3s ease;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.5) 0%, transparent 25%),
+                radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.5) 0%, transparent 25%),
+                radial-gradient(circle at 40% 60%, rgba(0, 191, 255, 0.5) 0%, transparent 25%),
+                radial-gradient(circle at 60% 40%, rgba(255, 20, 147, 0.5) 0%, transparent 25%),
+                radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, #000 100%);
+            z-index: -2;
+            animation: galaxyPulse 20s infinite alternate;
+        }
+
+        @keyframes galaxyPulse {
+            0% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 200px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 230px 100px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 270px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 300px 20px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 330px 60px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 360px 90px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 390px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 420px 110px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 450px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 480px 80px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 510px 50px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 540px 100px, #fff, rgba(0,0,0,0));
+            background-size: 550px 550px;
+            z-index: -1;
+            animation: stars 50s linear infinite;
+        }
+
+        @keyframes stars {
+            from { background-position: 0 0; }
+            to { background-position: 550px 0; }
+        }
+
+        .no-animation body::before,
+        .no-animation body::after,
+        .no-animation .pulsing-star,
+        .no-animation .comet {
+            animation: none !important;
+            display: none !important;
+        }
+
+        .dark-mode {
+            background: #000 !important;
+            color: #fff;
+        }
+        .dark-mode::before, .dark-mode::after {
+            display: none;
+        }
+        .dark-mode .sidebar, .dark-mode .feed-sidebar {
+            background: #000;
+        }
+        .dark-mode .room-card, .dark-mode .feed-post {
+            background: #111;
+        }
+
+        .light-mode {
+            background: #fff !important;
+            color: #000;
+        }
+        .light-mode::before, .light-mode::after {
+            display: none;
+        }
+        .light-mode .sidebar, .light-mode .feed-sidebar {
+            background: #fff;
+            color: #000;
+        }
+        .light-mode .room-card, .light-mode .feed-post {
+            background: #f0f0f0;
+            color: #000;
+        }
+        .light-mode .room-title, .light-mode .feed-username {
+            color: #000;
+        }
+        .light-mode .search-section i {
+            color: #000;
+        }
+        .light-mode .search-section input {
+            color: #000;
+            border: 1px solid #000;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .real-mode {
+            background: #000 !important;
+            color: #fff;
+        }
+        .real-mode::before, .real-mode::after {
+            display: block;
+        }
+        .real-mode .sidebar, .real-mode .feed-sidebar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        .real-mode .room-card, .real-mode .feed-post {
+            background: var(--card-background);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 275px;
+            height: 100%;
+            background: linear-gradient(135deg, #000, #1e90ff);
+            backdrop-filter: blur(5px);
+            transition: left 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 1000;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                top: auto;
+                left: 10px;
+                bottom: -100%;
+                width: 280px;
+                height: 70%;
+                border-radius: 20px;
+                transition: bottom 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+                padding: 20px;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+                border: 5px solid #333;
+                background: linear-gradient(135deg, #000, #1e90ff);
+                z-index: 1001;
+            }
+
+            .sidebar.active {
+                bottom: 10px;
+            }
+
+            .sidebar::before {
+                content: '';
+                position: absolute;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 50px;
+                height: 5px;
+                background: #666;
+                border-radius: 5px;
+            }
+        }
+
+        .sidebar button {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 12px;
+            background: rgba(42, 42, 42, 0.7);
+            color: #fff;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .sidebar button i {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .sidebar button:hover {
+            background: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .sidebar button:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .main-content, .feed-content {
+            padding: 20px;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (min-width: 769px) {
+            .main-content.shifted, .feed-content.shifted {
+                margin-left: 275px;
+                width: calc(100% - 275px);
+            }
+        }
+
+        .room-card, .feed-post {
+            width: 100%;
+            min-height: 250px;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            background: var(--card-background);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+            margin: 0 auto 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .room-card::before, .feed-post::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .room-card:hover::before, .feed-post:hover::before {
+            opacity: 0.2;
+        }
+
+        .room-card:hover, .feed-post:hover {
+            border: 2px solid var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(30, 144, 255, 0.5);
+        }
+
+        .room-title, .feed-username {
+            color: var(--text-primary);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(30, 144, 255, 0.7);
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .light-mode .room-title, .light-mode .feed-username {
+            color: #000;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-pic {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 5px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            animation: rotateColor 2s infinite;
+        }
+
+        .profile-pic.premium::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        .people-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        .people-row div {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .people-row div:nth-child(2) {
+            margin-top: 10px;
+        }
+
+        @keyframes rotateColor {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .create-room-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #000, #1e90ff);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            color: var(--text-primary);
+            width: 90%;
+            max-width: 450px;
+            backdrop-filter: blur(5px);
+        }
+
+        .create-room-modal.active {
+            display: block;
+        }
+
+        .create-room-modal input,
+        .create-room-modal select {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 16px;
+            outline: none;
+        }
+
+        .create-room-modal label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .create-room-modal button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .create-room-modal button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.5);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .custom-input {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .custom-input.active {
+            display: block;
+        }
+
+        .plus-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .plus-button:hover {
+            background: var(--secondary);
+            transform: scale(1.2) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(30, 144, 255, 0.7);
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .title-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            left: 20px;
+        }
+
+        .title-section h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin: 0;
+            color: white;
+            text-shadow: 0 0 10px var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .title-section h1:hover {
+            color: var(--secondary);
+            text-shadow: 0 0 15px var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .navbar-toggle {
+            background: var(--primary);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(30, 144, 255, 0.5);
+        }
+
+        .search-section {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-section input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border-radius: 25px;
+            border: 1px solid var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            outline: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-section input:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+        }
+
+        .search-section i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: absolute;
+            right: 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .nav-buttons button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-buttons button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-buttons button:hover::before {
+            left: 100%;
+        }
+
+        .nav-buttons button.active {
+            background: linear-gradient(45deg, #00008b, #4169e1);
+            box-shadow: 0 0 15px rgba(0, 0, 139, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .nav-buttons button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.7);
+        }
+
+        .nav-buttons button.discord {
+            background: linear-gradient(45deg, #5865F2, #7289DA);
+        }
+
+        .nav-buttons button.premium {
+            background: linear-gradient(45deg, #dc2626, #f87171);
+        }
+
+        .nav-buttons button.create-room-btn {
+            background: linear-gradient(45deg, #60a5fa, #93c5fd);
+        }
+
+        .category-buttons {
+            display: none;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 1400px;
+        }
+
+        .category-buttons.active {
+            display: flex;
+        }
+
+        .category-buttons button {
+            padding: 8px 15px;
+            font-size: 14px;
+            border-radius: 25px;
+            border: none;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin: 3px;
+        }
+
+        .category-buttons button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .category-buttons button:hover::before {
+            left: 100%;
+        }
+
+        .category-buttons button.active {
+            background: linear-gradient(45deg, #00008b, #4169e1);
+            box-shadow: 0 0 15px rgba(0, 0, 139, 0.7);
+        }
+
+        .category-buttons button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.7);
+        }
+
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 10px;
+        }
+
+        @media (min-width: 768px) {
+            .room-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .main-content, .feed-content {
+                padding: 20px 40px;
+            }
+        }
+
+        .join-room, .back-home-btn, .post-button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .join-room::before, .back-home-btn::before, .post-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .join-room:hover::before, .back-home-btn:hover::before, .post-button:hover::before {
+            left: 100%;
+        }
+
+        .join-room:hover, .back-home-btn:hover, .post-button:hover {
+            background: linear-gradient(45deg, var(--secondary), #93c5fd);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(30, 144, 255, 0.5);
+        }
+
+        .room-footer, .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .post-icon {
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+
+        .post-icon:hover {
+            color: var(--secondary);
+            transform: scale(1.2);
+        }
+
+        .pulsing-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px white;
+            animation: pulse 2s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.5); }
+        }
+
+        .comet {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+            z-index: -1;
+            animation: cometFly 15s linear infinite;
+        }
+
+        @keyframes cometFly {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(500px, 300px); opacity: 0; }
+        }
+
+        .language-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 5px;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .feed-content {
+            display: none;
+            flex-direction: row;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            justify-content: space-between;
+        }
+
+        .feed-content.active {
+            display: flex;
+        }
+
+        .feed-main {
+            flex: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 16px;
+            z-index: 100;
+        }
+
+        .feed-input {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+        }
+
+        .feed-input .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .feed-input .post-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .feed-input textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 18px;
+            resize: none;
+            outline: none;
+            padding: 12px 0;
+            min-height: 60px;
+        }
+
+        .feed-input textarea::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .feed-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feed-post {
+            background: var(--card-background);
+            padding: 16px;
+            border-radius: 10px;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        .feed-post:hover {
+            background: rgba(31, 40, 46, 0.9);
+        }
+
+        .feed-post img.post-image {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .post-content {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin: 10px 0;
+        }
+
+        .post-hashtags {
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        .post-actions-bar {
+            display: flex;
+            justify-content: space-between;
+            max-width: 80%;
+            margin-top: 12px;
+            color: var(--text-secondary);
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .post-action i {
+            margin-right: 4px;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 16px;
+        }
+
+        .post-action:hover i {
+            background-color: var(--hover-color);
+            color: var(--primary);
+        }
+
+        .feed-sidebar {
+            width: 275px;
+            padding: 20px;
+            background: linear-gradient(135deg, #000, #1e90ff);
+            backdrop-filter: blur(5px);
+            border-radius: 10px;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .feed-sidebar {
+                display: none;
+            }
+            .feed-main {
+                margin: 0 auto;
+                max-width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="real-mode">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button id="home-btn"><i class="fas fa-home"></i> Home</button>
+        <button id="feed-btn"><i class="fas fa-rss"></i> Feed</button>
+        <button id="dark-mode-btn"><i class="fas fa-moon"></i> Dark</button>
+        <button id="light-mode-btn"><i class="fas fa-sun"></i> Light</button>
+        <button id="real-mode-btn"><i class="fas fa-rocket"></i> Space</button>
+        <button id="stop-animation-btn"><i class="fas fa-pause"></i> Stop Animation</button>
+        <button id="color-picker-btn"><i class="fas fa-palette"></i> Pick Color</button>
+        <button id="settings-btn"><i class="fas fa-cog"></i> Settings</button>
+        <button id="notifications-btn"><i class="fas fa-bell"></i> Notifications</button>
+        <button id="profile-btn"><i class="fas fa-user"></i> Profile</button>
+        <button id="help-btn"><i class="fas fa-question-circle"></i> Help</button>
+        <button id="privacy-btn"><i class="fas fa-shield-alt"></i> Privacy Policy</button>
+        <button id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        <button id="close-sidebar-btn"><i class="fas fa-times"></i> Close</button>
+    </div>
+
+    <!-- Main Content (Home Page) -->
+    <div class="main-content flex flex-col items-center w-full" id="main-content">
+        <!-- Header -->
+        <div class="header-section">
+            <div class="title-section">
+                <h1>HAPPY TALK</h1>
+                <button class="navbar-toggle" id="navbar-toggle"><i class="fas fa-bars"></i></button>
+            </div>
+            <div class="search-section">
+                <input id="search-input" placeholder="Search rooms..." type="text"/>
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="profile-section">
+                <input type="color" id="color-picker" style="display: none;">
+                <img alt="Profile" class="w-8 h-8 rounded-full" src="https://storage.googleapis.com/a1aa/image/uL6NbO7ule3yAaG0CpQKIilAue8eTYNquHR1ozsJXRzA5fCQB.jpg"/>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons" id="nav-buttons">
+            <button id="all-button">All</button>
+            <button>TRENDING</button>
+            <button>NEWS</button>
+            <button>TECH</button>
+            <button>AI</button>
+            <button>ENGLISH</button>
+            <button>PODCAST</button>
+            <button>MOVIES</button>
+            <button class="discord" onclick="window.open('https://discord.gg/bmfp2bmN', '_blank')">Discord</button>
+            <button class="premium">Premium</button>
+            <button class="create-room-btn" id="create-room-btn">Create Room</button>
+        </div>
+
+        <!-- Category Buttons -->
+        <div class="category-buttons" id="category-buttons"></div>
+
+        <!-- Room Cards -->
+        <div class="room-grid" id="room-grid">
+            <!-- Room 1 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">English</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="english-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/EnglishRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 2 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Spanish</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="spanish-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/SpanishRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 3 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">French</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="french-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/FrenchRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 4 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">German</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="german-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/GermanRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 5 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Japanese</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="japanese-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/JapaneseRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 6 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Korean</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="korean-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/KoreanRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 7 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Hindi</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="hindi-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/HindiRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 8 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Arabic</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="arabic-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/ArabicRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+            <!-- Room 9 -->
+            <div class="room-card">
+                <div class="flex justify-between items-center">
+                    <div class="text-xl font-bold room-title">Portuguese</div>
+                    <div><i class="fas fa-microphone text-yellow-500"></i></div>
+                </div>
+                <div class="people-row mt-3" id="portuguese-people">
+                    <div></div>
+                    <div></div>
+                </div>
+                <div class="room-footer">
+                    <i class="fas fa-share-alt post-icon"></i>
+                    <button class="join-room" onclick="window.open('https://meet.jit.si/PortugueseRoom', '_blank')">JOIN</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Create Room Modal -->
+        <div class="modal-overlay" id="modal-overlay"></div>
+        <div class="create-room-modal" id="create-room-modal">
+            <h2 class="text-2xl font-bold mb-6">Create a Room</h2>
+            <div class="mb-6">
+                <label>Title</label>
+                <input type="text" id="room-title" placeholder="Room Name"/>
+            </div>
+            <div class="mb-6">
+                <label>Language</label>
+                <select id="room-language">
+                    <option>English</option>
+                    <option>Spanish</option>
+                    <option>French</option>
+                    <option>Korean</option>
+                    <option>Japanese</option>
+                    <option>Hindi</option>
+                    <option>Tamil</option>
+                    <option>Telugu</option>
+                    <option>Bengali</option>
+                    <option>Malayalam</option>
+                    <option>German</option>
+                    <option>Italian</option>
+                    <option>Russian</option>
+                    <option>Arabic</option>
+                    <option>Portuguese</option>
+                    <option>Chinese</option>
+                    <option>Urdu</option>
+                    <option>Punjabi</option>
+                    <option>Marathi</option>
+                    <option>Gujarati</option>
+                    <option>Kannada</option>
+                    <option>Odia</option>
+                    <option>Assamese</option>
+                    <option>Vietnamese</option>
+                    <option>Thai</option>
+                    <option>Dutch</option>
+                    <option>Swedish</option>
+                    <option>Turkish</option>
+                    <option>Polish</option>
+                    <option>Hebrew</option>
+                </select>
+            </div>
+            <div class="mb-6">
+                <label>Visibility</label>
+                <select id="room-visibility">
+                    <option>Public</option>
+                    <option>Private</option>
+                </select>
+            </div>
+            <div class="mb-6">
+                <label>Max People</label>
+                <select id="room-max-people">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                    <option>Unlimited</option>
+                    <option>Custom</option>
+                </select>
+                <input type="number" class="custom-input" id="custom-max" placeholder="Enter custom number"/>
+            </div>
+            <div class="mb-6">
+                <label class="flex items-center mb-2">
+                    <input type="checkbox" class="mr-2" id="mic-toggle"/> <i class="fas fa-microphone mr-2"></i> Mic
+                </label>
+                <label class="flex items-center mb-2">
+                    <input type="checkbox" class="mr-2" id="camera-toggle"/> <i class="fas fa-video mr-2"></i> Camera
+                </label>
+                <label class="flex items-center">
+                    <input type="checkbox" class="mr-2" id="chat-toggle"/> <i class="fas fa-comments mr-2"></i> Chat
+                </label>
+            </div>
+            <button id="create-button">Create Room</button>
+        </div>
+
+        <!-- Plus Button -->
+        <div class="plus-button" id="plus-button">
+            <i class="fas fa-plus text-xl"></i>
+        </div>
+    </div>
+
+    <!-- Feed Content -->
+    <div class="feed-content" id="feed-content">
+        <div class="feed-sidebar">
+            <h2 class="text-xl font-bold mb-4">Trending Topics</h2>
+            <div class="mb-2">#LanguageLovers</div>
+            <div class="mb-2">#SpaceVibes</div>
+            <div class="mb-2">#MovieNight</div>
+            <div class="mb-2">#CultureExchange</div>
+            <h2 class="text-xl font-bold mb-4 mt-6">Suggested Users</h2>
+            <div class="flex items-center mb-2">
+                <img class="profile-pic" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+                <span>GalacticTalker</span>
+            </div>
+            <div class="flex items-center mb-2">
+                <img class="profile-pic" src="https://randomuser.me/api/portraits/women/45.jpg"/>
+                <span>StarSpeaker</span>
+            </div>
+        </div>
+        <div class="feed-main">
+            <div class="feed-header">
+                <h1 class="font-orbitron text-2xl text-white text-shadow-md">HAPPY TALK FEED</h1>
+                <button class="back-home-btn" id="back-home-btn">Back to Home</button>
+            </div>
+            <div class="feed-input">
+                <div class="post-avatar">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User">
+                </div>
+                <div class="post-input">
+                    <textarea placeholder="Share your thoughts..."></textarea>
+                    <div class="post-actions">
+                        <div class="post-icons">
+                            <i class="far fa-image"></i>
+                            <i class="fas fa-link"></i>
+                            <i class="far fa-smile"></i>
+                        </div>
+                        <button class="post-button" disabled>Post</button>
+                    </div>
+                </div>
+            </div>
+            <div class="feed-posts">
+                <!-- Post 1 -->
+                <div class="feed-post">
+                    <div class="flex items-center">
+                        <div class="post-avatar">
+                            <img class="profile-pic" src="https://randomuser.me/api/portraits/women/65.jpg"/>
+                        </div>
+                        <div class="feed-username">StarGazer</div>
+                    </div>
+                    <div class="post-content">
+                        Just joined an amazing English room! Learning new phrases and making friends. #LanguageLovers #HappyTalk
+                    </div>
+                    <img class="post-image" src="https://source.unsplash.com/random/600x400?galaxy" alt="Post Image"/>
+                    <div class="post-hashtags">#SpaceVibes #Community</div>
+                    <div class="post-actions-bar">
+                        <div class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>24</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-retweet"></i>
+                            <span>56</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>189</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Post 2 -->
+                <div class="feed-post">
+                    <div class="flex items-center">
+                        <div class="post-avatar">
+                            <img class="profile-pic premium" src="https://randomuser.me/api/portraits/men/75.jpg"/>
+                        </div>
+                        <div class="feed-username">CosmoChat</div>
+                    </div>
+                    <div class="post-content">
+                        Spanish room was lit! Discussed favorite movies en español. Join us next time! #CineEnEspañol
+                    </div>
+                    <div class="post-hashtags">#MovieNight #HappyTalk</div>
+                    <div class="post-actions-bar">
+                        <div class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>42</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-retweet"></i>
+                            <span>128</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>567</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- Post 3 -->
+                <div class="feed-post">
+                    <div class="flex items-center">
+                        <div class="post-avatar">
+                            <img class="profile-pic" src="https://randomuser.me/api/portraits/women/35.jpg"/>
+                        </div>
+                        <div class="feed-username">NebulaNerd</div>
+                    </div>
+                    <div class="post-content">
+                        French conversation practice was so fun! Learned about Parisian culture. #FrenchVibes
+                    </div>
+                    <img class="post-image" src="https://source.unsplash.com/random/600x400?paris" alt="Post Image"/>
+                    <div class="post-hashtags">#CultureExchange #HappyTalk</div>
+                    <div class="post-actions-bar">
+                        <div class="post-action">
+                            <i class="far fa-comment"></i>
+                            <span>18</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-retweet"></i>
+                            <span>32</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="far fa-heart"></i>
+                            <span>243</span>
+                        </div>
+                        <div class="post-action">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="feed-sidebar">
+            <h2 class="text-xl font-bold mb-4">Trending Topics</h2>
+            <div class="mb-2">#LanguageLovers</div>
+            <div class="mb-2">#SpaceVibes</div>
+            <div class="mb-2">#MovieNight</div>
+            <div class="mb-2">#CultureExchange</div>
+            <h2 class="text-xl font-bold mb-4 mt-6">Suggested Users</h2>
+            <div class="flex items-center mb-2">
+                <img class="profile-pic" src="https://randomuser.me/api/portraits/men/85.jpg"/>
+                <span>GalacticTalker</span>
+            </div>
+            <div class="flex items-center mb-2">
+                <img class="profile-pic" src="https://randomuser.me/api/portraits/women/45.jpg"/>
+                <span>StarSpeaker</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const navbarToggle = document.getElementById('navbar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const mainContent = document.getElementById('main-content');
+        const feedContent = document.getElementById('feed-content');
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const lightModeBtn = document.getElementById('light-mode-btn');
+        const realModeBtn = document.getElementById('real-mode-btn');
+        const stopAnimationBtn = document.getElementById('stop-animation-btn');
+        const colorPickerBtn = document.getElementById('color-picker-btn');
+        const colorPicker = document.getElementById('color-picker');
+        const allButton = document.getElementById('all-button');
+        const categoryButtons = document.getElementById('category-buttons');
+        const createRoomBtn = document.getElementById('create-room-btn');
+        const createRoomModal = document.getElementById('create-room-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const createButton = document.getElementById('create-button');
+        const roomMaxPeople = document.getElementById('room-max-people');
+        const customMax = document.getElementById('custom-max');
+        const searchInput = document.getElementById('search-input');
+        const roomGrid = document.getElementById('room-grid');
+        const plusButton = document.getElementById('plus-button');
+        const privacyBtn = document.getElementById('privacy-btn');
+        const homeBtn = document.getElementById('home-btn');
+        const feedBtn = document.getElementById('feed-btn');
+        const backHomeBtn = document.getElementById('back-home-btn');
+
+        const languages = [
+            'English', 'Spanish', 'French', 'German', 'Italian', 'Japanese', 'Chinese', 'Korean', 'Russian', 'Arabic',
+            'Portuguese', 'Hindi', 'Bengali', 'Tamil', 'Telugu', 'Marathi', 'Gujarati', 'Punjabi', 'Urdu', 'Kannada',
+            'Malayalam', 'Odia', 'Assamese', 'Vietnamese', 'Thai', 'Dutch', 'Swedish', 'Turkish', 'Polish', 'Hebrew'
+        ];
+
+        const profileImages = [
+            'https://randomuser.me/api/portraits/women/65.jpg',
+            'https://randomuser.me/api/portraits/women/45.jpg',
+            'https://randomuser.me/api/portraits/women/35.jpg',
+            'https://randomuser.me/api/portraits/women/15.jpg',
+            'https://randomuser.me/api/portraits/men/75.jpg',
+            'https://randomuser.me/api/portraits/men/85.jpg',
+            'https://randomuser.me/api/portraits/women/70.jpg',
+            'https://randomuser.me/api/portraits/women/60.jpg',
+            'https://randomuser.me/api/portraits/men/80.jpg',
+            'https://randomuser.me/api/portraits/men/90.jpg'
+        ];
+
+        let animationStopped = false;
+
+        // Initialize language buttons
+        function initLanguageButtons() {
+            categoryButtons.innerHTML = '';
+            for (let i = 0; i < languages.length; i += 10) {
+                const row = document.createElement('div');
+                row.className = 'language-row';
+                const rowLanguages = languages.slice(i, i + 10);
+                rowLanguages.forEach(lang => {
+                    const button = document.createElement('button');
+                    button.textContent = lang;
+                    button.addEventListener('click', () => {
+                        categoryButtons.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        filterRoomsByLanguage(lang);
+                    });
+                    row.appendChild(button);
+                });
+                categoryButtons.appendChild(row);
+            }
+        }
+
+        // Filter rooms by language
+        function filterRoomsByLanguage(language) {
+            const rooms = document.querySelectorAll('.room-card');
+            rooms.forEach(room => {
+                const title = room.querySelector('.room-title').textContent.toLowerCase();
+                if (title === language.toLowerCase()) {
+                    room.style.display = 'flex';
+                } else {
+                    room.style.display = 'none';
+                }
+            });
+        }
+
+        // Randomly assign profile pictures to rooms
+        function assignRandomProfiles() {
+            const rooms = ['english', 'spanish', 'french', 'german', 'japanese', 'korean', 'hindi', 'arabic', 'portuguese'];
+            rooms.forEach(room => {
+                const peopleRow = document.getElementById(`${room}-people`);
+                peopleRow.innerHTML = '<div></div><div></div>';
+                const firstRow = peopleRow.children[0];
+                const secondRow = peopleRow.children[1];
+                const numPeople = Math.floor(Math.random() * 7) + 4;
+                const shuffledImages = profileImages.sort(() => 0.5 - Math.random());
+                for (let i = 0; i < numPeople; i++) {
+                    const img = document.createElement('img');
+                    img.className = 'profile-pic';
+                    if (Math.random() < 0.2) img.classList.add('premium');
+                    img.src = shuffledImages[i];
+                    if (i < 5) {
+                        firstRow.appendChild(img);
+                    } else {
+                        secondRow.appendChild(img);
+                    }
+                }
+            });
+        }
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            if (window.innerWidth > 768) {
+                mainContent.classList.toggle('shifted');
+                feedContent.classList.toggle('shifted');
+            }
+        }
+
+        // Show feed
+        function showFeed() {
+            mainContent.classList.add('hidden');
+            feedContent.classList.add('active');
+            toggleSidebar();
+        }
+
+        // Show home
+        function showHome() {
+            mainContent.classList.remove('hidden');
+            feedContent.classList.remove('active');
+            document.querySelectorAll('.room-card').forEach(room => {
+                room.style.display = 'flex';
+            });
+            categoryButtons.classList.remove('active');
+            allButton.classList.remove('active');
+            toggleSidebar();
+        }
+
+        navbarToggle.addEventListener('click', toggleSidebar);
+        closeSidebarBtn.addEventListener('click', toggleSidebar);
+
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !navbarToggle.contains(e.target) && 
+                window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        });
+
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('light-mode', 'real-mode');
+            document.body.classList.add('dark-mode');
+        });
+
+        lightModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode', 'real-mode');
+            document.body.classList.add('light-mode');
+        });
+
+        realModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode', 'light-mode');
+            document.body.classList.add('real-mode');
+        });
+
+        stopAnimationBtn.addEventListener('click', () => {
+            animationStopped = !animationStopped;
+            document.body.classList.toggle('no-animation');
+            stopAnimationBtn.innerHTML = animationStopped
+                ? '<i class="fas fa-play"></i> Start Animation'
+                : '<i class="fas fa-pause"></i> Stop Animation';
+            document.querySelectorAll('.pulsing-star, .comet').forEach(el => el.remove());
+            if (!animationStopped) {
+                createGalaxyEffects();
+            }
+        });
+
+        colorPickerBtn.addEventListener('click', () => {
+            colorPicker.click();
+        });
+
+        colorPicker.addEventListener('input', (e) => {
+            document.body.style.background = e.target.value;
+            document.body.classList.remove('dark-mode', 'light-mode', 'real-mode');
+        });
+
+        allButton.addEventListener('click', function() {
+            if (categoryButtons.classList.contains('active')) {
+                categoryButtons.classList.remove('active');
+                allButton.classList.remove('active');
+                const rooms = document.querySelectorAll('.room-card');
+                rooms.forEach(room => {
+                    room.style.display = 'flex';
+                });
+            } else {
+                categoryButtons.classList.add('active');
+                allButton.classList.add('active');
+                const rooms = document.querySelectorAll('.room-card');
+                rooms.forEach(room => {
+                    room.style.display = 'flex';
+                });
+            }
+        });
+
+        document.querySelectorAll('.nav-buttons button:not(#all-button)').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.nav-buttons button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                const rooms = document.querySelectorAll('.room-card');
+                rooms.forEach(room => {
+                    room.style.display = 'flex';
+                });
+                categoryButtons.classList.remove('active');
+                allButton.classList.remove('active');
+            });
+        });
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const rooms = Array.from(roomGrid.children);
+            rooms.forEach(room => {
+                const title = room.querySelector('.room-title').textContent.toLowerCase();
+                if (title.includes(searchTerm)) {
+                    room.style.display = 'flex';
+                } else {
+                    room.style.display = 'none';
+                }
+            });
+        });
+
+        createRoomBtn.addEventListener('click', () => {
+            createRoomModal.classList.add('active');
+            modalOverlay.classList.add('active');
+        });
+
+        plusButton.addEventListener('click', () => {
+            createRoomModal.classList.add('active');
+            modalOverlay.classList.add('active');
+        });
+
+        modalOverlay.addEventListener('click', () => {
+            createRoomModal.classList.remove('active');
+            modalOverlay.classList.remove('active');
+        });
+
+        createButton.addEventListener('click', () => {
+            createRoomModal.classList.remove('active');
+            modalOverlay.classList.remove('active');
+        });
+
+        roomMaxPeople.addEventListener('change', () => {
+            customMax.classList.toggle('active', roomMaxPeople.value === 'Custom');
+        });
+
+        privacyBtn.addEventListener('click', () => {
+            window.open('privacy.html', '_blank');
+        });
+
+        homeBtn.addEventListener('click', showHome);
+
+        feedBtn.addEventListener('click', showFeed);
+
+        backHomeBtn.addEventListener('click', showHome);
+
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = '';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = '';
+            });
+        });
+
+        // Post button enable/disable
+        const textarea = document.querySelector('.feed-input textarea');
+        const postButton = document.querySelector('.feed-input .post-button');
+        textarea.addEventListener('input', () => {
+            postButton.disabled = textarea.value.trim().length === 0;
+        });
+
+        function createGalaxyEffects() {
+            if (animationStopped) return;
+            for (let i = 0; i < 30; i++) {
+                const star = document.createElement('div');
+                star.className = 'pulsing-star';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(star);
+            }
+
+            for (let i = 0; i < 5; i++) {
+                const comet = document.createElement('div');
+                comet.className = 'comet';
+                comet.style.top = Math.random() * 50 + 'vh';
+                comet.style.left = Math.random() * 50 + 'vw';
+                comet.style.animationDelay = Math.random() * 10 + 's';
+                document.body.appendChild(comet);
+            }
+        }
+
+        initLanguageButtons();
+        createGalaxyEffects();
+        assignRandomProfiles();
+    </script>
+</body>
+</html>
